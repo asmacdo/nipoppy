@@ -80,13 +80,13 @@ class InitWorkflow(BaseDatasetWorkflow):
         self.mkdir(self.dpath_root / NIPOPPY_DIR_NAME)
         for dpath in self.layout.get_paths(directory=True, include_optional=True):
             # If a bids_source is passed it means datalad is installed.
-            if self.bids_source is not None and dpath.stem == "bids":
+            if self.bids_source is not None and dpath == self.layout.dpath_bids:
                 if self.mode == "copy":
                     self.copytree(self.bids_source, str(dpath), log_level=logging.DEBUG)
                 elif self.mode == "move":
                     self.movetree(self.bids_source, str(dpath), log_level=logging.DEBUG)
                 elif self.mode == "symlink":
-                    self.mkdir(self.dpath_root)
+                    self.mkdir(dpath.parent)
                     self.create_symlink(
                         self.bids_source, str(dpath), log_level=logging.DEBUG
                     )
