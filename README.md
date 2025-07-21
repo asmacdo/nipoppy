@@ -26,37 +26,39 @@ The framework includes three components:
 2. A specification for dataset organization that extends the [Brain Imaging Data Structure (BIDS) standard](https://bids.neuroimaging.io/) by providing additional guidelines for tabular (e.g., phenotypic) data and imaging derivatives.
 
 ```mermaid
-flowchart TD
-    A["&lt;dataset_root&gt;"] --- B["global_config.json"]
-    A --- C["manifest.tsv"]
-    A --- D["pipelines"]
-    A --- E["containers"]
-    A --- F["sourcedata"]
-    A --- G["tabular"]
-    A --- H["bids"]
-    A --- I["derivatives"]
-    A --- J["code"]
-    A --- K["logs"]
-    A --- L["scratch"]
+graph TB
+    A["&lt;dataset_root&gt;"]
 
-    F --- M["tabular"]
-    F --- N["imaging"]
-    N --- O["pre-reorg"]
-    N --- P["post-reorg"]
-    N --- Q["curation_status.tsv"]
+    A --> B["📄 global_config.json"]
+    A --> C["📄 manifest.tsv"]
+    A --> D["📁 pipelines"]
+    A --> E["📁 containers"]
+    A --> F["📁 sourcedata"]
+    A --> G["📁 tabular"]
+    A --> H["📁 bids"]
+    A --> I["📁 derivatives"]
+    A --> J["📁 code"]
+    A --> K["📁 logs"]
+    A --> L["📁 scratch"]
 
-    G --- R["demographics.tsv"]
-    G --- S["assessments"]
+    F --> M["📁 tabular"]
+    F --> N["📁 imaging"]
+    N --> O["📁 pre-reorg"]
+    N --> P["📁 post-reorg"]
+    N --> Q["📄 curation_status.tsv"]
 
-    I --- T["fmriprep"]
-    I --- U["processing_status.tsv"]
-    T --- V["20.2.7"]
-    V --- W["output"]
-    V --- X["idp"]
-    T --- Y["23.1.3"]
-    T --- Z["..."]
+    G --> R["📄 demographics.tsv"]
+    G --> S["📁 assessments"]
 
-    %% Styling to match original
+    I --> T["📁 fmriprep"]
+    I --> U["📄 processing_status.tsv"]
+    T --> V["📁 20.2.7"]
+    T --> Y["📁 23.1.3"]
+    T --> Z["📁 ..."]
+    V --> W["📁 output"]
+    V --> X["📁 idp"]
+
+    %% Styling with colors matching original
     classDef directory fill:#f9d71c,stroke:#333,stroke-width:2px,color:#000
     classDef createdFile fill:#fff3e0,stroke:#333,stroke-width:2px,color:#000
     classDef userConfig fill:#e8f5e8,stroke:#333,stroke-width:2px,color:#000
@@ -64,12 +66,22 @@ flowchart TD
     classDef tracking fill:#f3e5f5,stroke:#333,stroke-width:2px,color:#000
     classDef derivatives fill:#ffebee,stroke:#333,stroke-width:2px,color:#000
 
-    class A,D,E,F,G,H,I,J,K,L,M,N,O,P,S directory
+    class A,D,E,F,G,H,I,J,K,L,M,N,O,P,S,T,V,W,X,Y,Z directory
     class C createdFile
     class B userConfig
     class R userTabular
     class Q,U tracking
-    class T,V,W,X,Y,Z derivatives
+
+    %% Legend
+    subgraph Legend["Legend"]
+        L1["📁 Directory"]:::directory
+        L2["📄 File"]:::createdFile
+        L3["Created by nipoppy init"]:::createdFile
+        L4["User-provided configuration files"]:::userConfig
+        L5["User-provided tabular study data"]:::userTabular
+        L6["Tracking files"]:::tracking
+        L7["Imaging derivatives data"]:::derivatives
+    end
 ```
 
 3. A **command-line interface** and **Python package** that provide user-friendly tools for applying the framework. The tools build upon existing technologies such as the [Apptainer container platform](https://apptainer.org/) and the [Boutiques descriptor framework](https://boutiques.github.io/). Several existing containerized pipelines are supported out-of-the-box, and new pipelines can be added easily by the user.
